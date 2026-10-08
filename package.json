@@ -1,0 +1,19 @@
+{
+  "name": "tevalis-chatgpt",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "node scripts/start.mjs",
+    "openapi": "node scripts/openapi.mjs",
+    "build:image": "node scripts/build-image.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "zod": "4.6.5"
+  }
+}

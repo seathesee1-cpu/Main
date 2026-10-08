@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tevalis-mcp
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /ready
+    envVars:
+      - key: CHATGPT_ACTION_TOKEN
+        generateValue: true
+      - key: TEVALIS_DUBAI_GUID
+        sync: false
+      - key: TEVALIS_ABU_DHABI_GUID
+        sync: false
+      - key: TEVALIS_DEV_ID
+        sync: false
