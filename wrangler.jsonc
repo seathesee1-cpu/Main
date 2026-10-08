@@ -1,0 +1,8 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tevalis-mcp",
+  "main": "src/app.mjs",
+  "compatibility_date": "2026-10-08",
+  "workers_dev": true,
+  "observability": { "enabled": false }
+}

@@ -7,7 +7,9 @@
     "test": "node --test",
     "start": "node scripts/start.mjs",
     "openapi": "node scripts/openapi.mjs",
-    "build:image": "node scripts/build-image.mjs"
+    "build:image": "node scripts/build-image.mjs",
+    "build:worker": "XDG_CONFIG_HOME=/tmp/tevalis-xdg WRANGLER_SEND_METRICS=false wrangler deploy --dry-run --outdir .wrangler/build",
+    "deploy:worker": "XDG_CONFIG_HOME=/tmp/tevalis-xdg WRANGLER_SEND_METRICS=false wrangler deploy"
   },
   "engines": {
     "node": ">=22"
@@ -15,5 +17,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",
     "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "wrangler": "4.148.0"
   }
 }

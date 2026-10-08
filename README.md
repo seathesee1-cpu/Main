@@ -1,6 +1,6 @@
 # Tevalis MCP server
 
-A read-only MCP server targeting Render (or any Docker host), using the official MCP SDK
+A read-only MCP server targeting Cloudflare Workers (with a portable Docker option), using the official MCP SDK
 and stateless Streamable HTTP at `/mcp`. Calls use the documented Tevalis HTTPS
 API with CompanyId, GUID and DevID headers. GUID2 is not used because there are
 no write operations. Supplied credential values are not stored in this project.
@@ -83,21 +83,22 @@ directory and is not a schema for the MCP tools.
 
 ## Deployment and ChatGPT status
 
-The selected host is **Render**, using the Docker service in `render.yaml`.
-Cloudflare tooling and configuration have been removed. The MCP server is
-**not deployed or installed in ChatGPT**. No Render token or other usable cloud
-credentials are available in this session. The Blueprint declares a free service;
-free hosting may sleep when idle, so a continuously available production service
-would require an appropriate paid plan. No paid resources have been provisioned.
+The selected host is **Cloudflare Workers**, using `wrangler.jsonc` and the
+Web-standard handler in `src/app.mjs`. Render's Blueprint has been removed.
+The MCP server is **not deployed or installed in ChatGPT**.
 
-The Docker image uses Node.js 24, runs as the non-root `node` user, and listens on
-0.0.0.0:10000. Render supplies the external HTTPS URL through RENDER_EXTERNAL_URL.
-Other hosts can use PUBLIC_BASE_URL. The public `/ready` route returns only a
-boolean and HTTP 503 when Tevalis credentials are missing; it does not establish
-live upstream connectivity. Business endpoints require bearer authentication.
-`render.yaml` generates the independent service token and declares the three API
-secrets without storing values. Environment settings drafts do not supply Render
-with those values and do not deploy the service.
+From the repository directory, `npm run build:worker` validates the bundle without
+publishing. A real deployment uses `npm run deploy:worker` and authenticated
+Cloudflare access. The current environment proxy blocks api.cloudflare.com; no
+Cloudflare credentials are configured. Network settings and credential requirements
+saved in this environment's draft do not activate access or deploy the service.
+
+The four runtime values listed above must be provisioned as Cloudflare Worker
+secrets. They are not part of the deployment configuration or source bundle.
+The hosted MCP URL will be the actual Worker HTTPS origin followed by `/mcp`.
+No such deployed URL has been verified. The Worker `/health` route is authenticated
+and reports configuration presence only. `/ready` is specific to the optional
+Node/Docker adapter and is not a Worker route.
 
 Current MCP authentication is a bearer token, verified with the official SDK.
 ChatGPT authentication compatibility has not been tested. If the ChatGPT custom
@@ -106,10 +107,11 @@ OAuth authorization layer must be configured before registration. No available
 tool can register this custom connector in ChatGPT. A deployed URL alone is not
 sufficient evidence of a functioning ChatGPT installation.
 
-For an authorized deployment, publish the repository/image to Render, bind the
-three Tevalis secrets, then validate authenticated MCP calls at the actual HTTPS
-URL. Do not expose business or employee data through an unauthenticated endpoint.
-Do not put credential values in source, URLs, or logs.
+The portable Docker adapter remains usable independently. It runs as the non-root
+node user, binds to 0.0.0.0:10000, and supports PUBLIC_BASE_URL. The local container
+was validated against live Tevalis site lists for both regions. Do not expose
+business or employee data without authentication or put credentials in source,
+URLs, or logs.
 
 Use the existing checkout; do not create a Git worktree unless explicitly requested.
 
